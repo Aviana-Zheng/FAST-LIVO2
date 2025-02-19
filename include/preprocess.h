@@ -23,13 +23,13 @@ using namespace std;
 
 enum LiDARFeature
 {
-  Nor,
-  Poss_Plane,
-  Real_Plane,
-  Edge_Jump,
-  Edge_Plane,
-  Wire,
-  ZeroPoint
+  Nor,            // 正常点
+  Poss_Plane,     // 可能的平面点
+  Real_Plane,     // 确定的平面点
+  Edge_Jump,      // 有跨越的边
+  Edge_Plane,     // 边上的平面点
+  Wire,           // 线段，也许充当了无效点？也就是空间中的小线段
+  ZeroPoint       // 无效点，程序中未使用
 };
 enum Surround
 {
@@ -38,21 +38,22 @@ enum Surround
 };
 enum E_jump
 {
-  Nr_nor,
-  Nr_zero,
-  Nr_180,
-  Nr_inf,
-  Nr_blind
+  Nr_nor,         // 正常
+  Nr_zero,        // 0
+  Nr_180,         // 180
+  Nr_inf,         // 无穷大 跳变较远
+  Nr_blind        // 在盲区？
 };
 
 struct orgtype
 {
-  double range;
-  double dista;
-  double angle[2];
-  double intersect;
-  E_jump edj[2];
-  LiDARFeature ftype;
+  double range;         // 点云在xy平面离雷达中心的距离
+  double dista;         // 当前点与后一个点的距离
+  // 假设雷达原点为o 前一个点为M 当前点是A 后一个点是N
+  double angle[2];      // 这个是角OAM和角OAN的cos值
+  double intersect;     // 这个是角MAN的cos值
+  E_jump edj[2];        // 前后两点的类型
+  LiDARFeature ftype;   // 点类型
   orgtype()
   {
     range = 0;
@@ -148,7 +149,7 @@ public:
   vector<orgtype> typess[128]; // maximum 128 line lidar
   int lidar_type, point_filter_num, N_SCANS;
   
-  double blind, blind_sqr;
+  double blind, blind_sqr;              // 盲区
   bool feature_enabled, given_offset_time;
   ros::Publisher pub_full, pub_surf, pub_corn;
 
