@@ -23,6 +23,9 @@ void calcBodyCov(Eigen::Vector3d &pb, const float range_inc, const float degree_
   direction.normalize();
   Eigen::Matrix3d direction_hat;
   direction_hat << 0, -direction(2), direction(1), direction(2), 0, -direction(0), -direction(1), direction(0), 0;
+  // 计算两个基向量 base_vector1 和 base_vector2，这些基向量与方向向量 direction 正交。
+  // 协方差矩阵第二大特征值对应的特征向量v_2，其实就是这里数据 X^{*}对应的协方差矩阵，特征值最大的特征向量w。
+  // 其方向就是与特征向量v1垂直方向上，数据方差最大的方向
   Eigen::Vector3d base_vector1(1, 1, -(direction(0) + direction(1)) / direction(2));
   base_vector1.normalize();
   Eigen::Vector3d base_vector2 = base_vector1.cross(direction);

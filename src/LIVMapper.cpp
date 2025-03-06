@@ -358,6 +358,7 @@ void LIVMapper::handleLIO()
 
   double t1 = omp_get_wtime();
 
+  // ICP 配准
   voxelmap_manager->StateEstimation(state_propagat);
   _state = voxelmap_manager->state_;
   _pv_list = voxelmap_manager->pv_list_;
