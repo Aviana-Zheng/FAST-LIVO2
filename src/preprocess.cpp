@@ -522,7 +522,8 @@ void Preprocess::Pandar128_handler(const sensor_msgs::PointCloud2::ConstPtr &msg
     added_pt.x = pl_orig.points[i].x;
     added_pt.y = pl_orig.points[i].y;
     added_pt.z = pl_orig.points[i].z;
-    added_pt.curvature = pl_orig.points[i].timestamp * 1000.f;
+    // added_pt.curvature = pl_orig.points[i].timestamp * 1000.f;
+    added_pt.curvature = (pl_orig.points[i].timestamp - pl_orig.points[0].timestamp) * 1000.f;
 
     if (i % point_filter_num == 0)
     {
